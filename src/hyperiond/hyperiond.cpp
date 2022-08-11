@@ -25,7 +25,7 @@
 #include <mdns/MdnsProvider.h>
 #include <mdns/MdnsBrowser.h>
 #endif
-
+#include <utils/GlobalSignals.h>
 #include <jsonserver/JsonServer.h>
 #include <webserver/WebServer.h>
 #include "hyperiond.h"
@@ -93,6 +93,7 @@ HyperionDaemon::HyperionDaemon(const QString& rootPath, QObject* parent, bool lo
 	, _qtGrabber(nullptr)
 	, _dxGrabber(nullptr)
 	, _ssdp(nullptr)
+    , _lgGrabber(nullptr)
 #ifdef ENABLE_CEC
 	, _cecHandler(nullptr)
 #endif
@@ -275,6 +276,11 @@ void HyperionDaemon::freeObjects()
 		_jsonServer = nullptr;
 	}
 
+    _lgGrabber->forceClose();
+    _lgGrabber->thread()->quit();
+    _lgGrabber->thread()->wait();
+    delete _lgGrabber;
+    _lgGrabber = nullptr;
 #if defined(ENABLE_FLATBUF_SERVER)
 	if (_flatBufferServer != nullptr)
 	{
@@ -348,6 +354,7 @@ void HyperionDaemon::freeObjects()
 	delete _qtGrabber;
 	delete _dxGrabber;
 	delete _videoGrabber;
+    delete _lgGrabber;
 
 	_videoGrabber = nullptr;
 	_amlGrabber = nullptr;
@@ -356,6 +363,7 @@ void HyperionDaemon::freeObjects()
 	_osxGrabber = nullptr;
 	_qtGrabber = nullptr;
 	_dxGrabber = nullptr;
+    _lgGrabber = nullptr;
 }
 
 void HyperionDaemon::startNetworkServices()
@@ -385,6 +393,15 @@ void HyperionDaemon::startNetworkServices()
 #endif
 	fbThread->start();
 #endif
+
+    _lgGrabber = new LGGrabber();
+    QThread* lgThread = new QThread(this);
+    lgThread->setObjectName("LGGrabber");
+    _lgGrabber->moveToThread(lgThread);
+    connect(lgThread, &QThread::started, _lgGrabber, &LGGrabber::run);
+    connect(_lgGrabber, &LGGrabber::setGlobalInputImage, GlobalSignals::getInstance(), &GlobalSignals::setGlobalImage);
+    lgThread->start();
+
 
 #if defined(ENABLE_PROTOBUF_SERVER)
 	// Create Proto server in thread

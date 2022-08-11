@@ -137,6 +137,8 @@ if (ENABLE_MDNS)
 	target_link_libraries(${PROJECT_NAME} mdns)
 endif()
 
+target_link_libraries(${PROJECT_NAME} lg-grabber pthread dl rt)
+
 if (APPLE)
 	set_target_properties( ${PROJECT_NAME} PROPERTIES
 		MACOSX_BUNDLE TRUE

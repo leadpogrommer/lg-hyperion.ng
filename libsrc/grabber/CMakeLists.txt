@@ -33,3 +33,5 @@ endif(ENABLE_QT)
 if (ENABLE_DX)
 	add_subdirectory(directx)
 endif(ENABLE_DX)
+
+add_subdirectory(libdile_vt)

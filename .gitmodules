@@ -12,3 +12,6 @@
 [submodule "dependencies/external/qmdnsengine"]
 	path = dependencies/external/qmdnsengine
 	url = https://github.com/nitroshare/qmdnsengine.git
+[submodule "libsrc/grabber/libdile_vt/tv-native-apis"]
+	path = libsrc/grabber/libdile_vt/tv-native-apis
+	url = git@github.com:webosbrew/tv-native-apis.git

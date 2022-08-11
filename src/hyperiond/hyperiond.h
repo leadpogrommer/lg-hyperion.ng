@@ -68,6 +68,7 @@
 // settings management
 #include <utils/settings.h>
 #include <utils/Components.h>
+#include "grabber/LGGrabber.h"
 
 class HyperionIManager;
 class SysTray;
@@ -198,6 +199,7 @@ private:
 	QtWrapper*                 _qtGrabber;
 	DirectXWrapper*            _dxGrabber;
 	SSDPHandler*               _ssdp;
+    LGGrabber*                 _lgGrabber;
 
 	#ifdef ENABLE_CEC
 	CECHandler*                _cecHandler;

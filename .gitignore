@@ -38,3 +38,8 @@ NULL
 
 # Docker deploy folder
 deploy/*
+
+build
+cmake-build-debug-webos2
+cmake-build-release-webos2
+.idea
