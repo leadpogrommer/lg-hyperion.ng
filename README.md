@@ -1,3 +1,9 @@
+This fork contains grabber from [hyperion-webos](https://github.com/webosbrew/hyperion-webos)
+
+You should launch it on WebOs tv directly
+
+---
+
 ![Hyperion](doc/logo_dark.png#gh-dark-mode-only)
 ![Hyperion](doc/logo_light.png#gh-light-mode-only)
 
